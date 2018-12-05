@@ -10,6 +10,9 @@ BucketList.prototype.bindEvents = function () {
   PubSub.subscribe('FormView:new-item-submitted', (evt) => {
     this.postItem(evt.detail);
   })
+  PubSub.subscribe('ListItemView:delete-confirmed', (evt) => {
+    this.deleteItem(evt.detail);
+  })
   this.getData();
 };
 
@@ -17,6 +20,13 @@ BucketList.prototype.postItem = function (newItem) {
   const fullItem = {description: newItem.description.value,
                     completed: false};
   this.request.post(fullItem)
+  .then((listItems) => {
+    PubSub.publish('BucketList:list-ready', listItems)
+  });
+};
+
+BucketList.prototype.deleteItem = function (id) {
+  this.request.delete(id)
   .then((listItems) => {
     PubSub.publish('BucketList:list-ready', listItems)
   });
