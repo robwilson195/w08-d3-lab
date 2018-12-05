@@ -1,3 +1,4 @@
+const PubSub = require('../helpers/pub_sub.js');
 const Request = require('../helpers/request_helper.js');
 
 const BucketList = function (url) {
@@ -12,7 +13,7 @@ BucketList.prototype.bindEvents = function () {
 BucketList.prototype.getData = function () {
   this.request.get()
   .then((listItems) => {
-    console.log(listItems);
+    PubSub.publish('BucketList:list-ready', listItems)
   });
 };
 
