@@ -14,9 +14,12 @@ BucketList.prototype.bindEvents = function () {
 };
 
 BucketList.prototype.postItem = function (newItem) {
-  const fullItem = {description: newItem.description,
+  const fullItem = {description: newItem.description.value,
                     completed: false};
-  console.log(fullItem);
+  this.request.post(fullItem)
+  .then((listItems) => {
+    PubSub.publish('BucketList:list-ready', listItems)
+  });
 };
 
 BucketList.prototype.getData = function () {

@@ -8,7 +8,6 @@ FormView.prototype.bindEvents = function () {
   this.element.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const newListItem = evt.target;
-    console.log(evt.target);
     PubSub.publish('FormView:new-item-submitted', newListItem);
     this.element.reset();
   });
